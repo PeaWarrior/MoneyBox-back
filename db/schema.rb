@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_191250) do
+ActiveRecord::Schema.define(version: 2020_09_17_211438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,17 @@ ActiveRecord::Schema.define(version: 2020_09_17_191250) do
     t.index ["user_id"], name: "index_portfolios_on_user_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.bigint "portfolio_id", null: false
+    t.string "category"
+    t.integer "price"
+    t.integer "shares"
+    t.date "date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["portfolio_id"], name: "index_transactions_on_portfolio_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
@@ -31,4 +42,5 @@ ActiveRecord::Schema.define(version: 2020_09_17_191250) do
   end
 
   add_foreign_key "portfolios", "users"
+  add_foreign_key "transactions", "portfolios"
 end
