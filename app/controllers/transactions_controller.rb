@@ -4,6 +4,7 @@ class TransactionsController < ApplicationController
         portfolio = @current_user.portfolios.find(transaction_params[:portfolio_id])
         
         if portfolio
+            byebug
             transaction = portfolio.transactions.create(transaction_params)
             if transaction.valid?
                 render json: { transaction: TransactionSerializer.new(transaction) }
@@ -17,6 +18,6 @@ class TransactionsController < ApplicationController
     private
 
     def transaction_params
-        params.permit(:portfolio_id, :type, :price, :shares, :date)
+        params.permit(:portfolio_id, :category, :price, :shares, :date)
     end
 end

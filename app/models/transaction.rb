@@ -13,7 +13,7 @@ class Transaction < ApplicationRecord
   end
 
   def category_is_dividend?
-    self.category === 'dividend') ? true : false
+    self.category === 'dividend' ? true : false
   end
 
 end

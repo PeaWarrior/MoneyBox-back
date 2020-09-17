@@ -1,4 +1,4 @@
 class TransactionSerializer < ActiveModel::Serializer
-  attributes :id, :type, :price, :shares, :date
+  attributes :id, :category, :price, :shares, :date
   has_one :portfolio
 end
