@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :stocks
   resources :transactions
   resources :portfolios
   post '/signup', to: 'users#create'

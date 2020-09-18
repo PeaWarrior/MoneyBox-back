@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_211438) do
+ActiveRecord::Schema.define(version: 2020_09_18_192729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.bigint "portfolio_id", null: false
+    t.string "category"
+    t.integer "price"
+    t.integer "shares"
+    t.date "date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["portfolio_id"], name: "index_activities_on_portfolio_id"
+  end
+
+  create_table "activity_stocks", force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.bigint "stock_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_activity_stocks_on_activity_id"
+    t.index ["stock_id"], name: "index_activity_stocks_on_stock_id"
+  end
 
   create_table "portfolios", force: :cascade do |t|
     t.string "name"
@@ -23,15 +43,11 @@ ActiveRecord::Schema.define(version: 2020_09_17_211438) do
     t.index ["user_id"], name: "index_portfolios_on_user_id"
   end
 
-  create_table "transactions", force: :cascade do |t|
-    t.bigint "portfolio_id", null: false
-    t.string "category"
-    t.integer "price"
-    t.integer "shares"
-    t.date "date"
+  create_table "stocks", force: :cascade do |t|
+    t.string "name"
+    t.string "ticker"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["portfolio_id"], name: "index_transactions_on_portfolio_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,6 +57,8 @@ ActiveRecord::Schema.define(version: 2020_09_17_211438) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "activities", "portfolios"
+  add_foreign_key "activity_stocks", "activities"
+  add_foreign_key "activity_stocks", "stocks"
   add_foreign_key "portfolios", "users"
-  add_foreign_key "transactions", "portfolios"
 end

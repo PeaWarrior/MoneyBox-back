@@ -1,5 +1,5 @@
 class PortfolioSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :name, :created_at
   has_one :user
-  has_many :transactions
+  has_many :activities
 end

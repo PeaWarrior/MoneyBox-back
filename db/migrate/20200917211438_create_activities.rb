@@ -1,6 +1,6 @@
-class CreateTransactions < ActiveRecord::Migration[6.0]
+class CreateActivities < ActiveRecord::Migration[6.0]
   def change
-    create_table :transactions do |t|
+    create_table :activities do |t|
       t.belongs_to :portfolio, null: false, foreign_key: true
       t.string :category
       t.integer :price

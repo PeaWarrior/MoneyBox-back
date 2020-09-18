@@ -1,5 +1,7 @@
-class Transaction < ApplicationRecord
+class Activity < ApplicationRecord
   belongs_to :portfolio
+  has_one :activity_stock, dependent: :destroy
+  has_one :stock, through: :activity_stock
 
   validates :category, presence: true, inclusion: { in: %w(fund dividend buy sell) }
   validates :price, presence: true
