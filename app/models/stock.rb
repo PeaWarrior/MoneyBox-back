@@ -1,3 +1,4 @@
 class Stock < ApplicationRecord
-    has_many :activity_stocks
+    belongs_to :portfolio
+    has_many :activities
 end
