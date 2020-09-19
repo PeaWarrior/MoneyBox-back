@@ -18,8 +18,9 @@ ActiveRecord::Schema.define(version: 2020_09_19_043631) do
   create_table "activities", force: :cascade do |t|
     t.bigint "stock_id", null: false
     t.string "category"
-    t.integer "price"
-    t.integer "shares"
+    t.float "price"
+    t.float "shares"
+    t.float "remaining"
     t.date "date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -29,7 +30,7 @@ ActiveRecord::Schema.define(version: 2020_09_19_043631) do
   create_table "funds", force: :cascade do |t|
     t.bigint "portfolio_id", null: false
     t.string "name"
-    t.integer "amount"
+    t.float "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["portfolio_id"], name: "index_funds_on_portfolio_id"

@@ -2,7 +2,7 @@ class PortfoliosController < ApplicationController
 
     def index
         portfolios = @current_user.portfolios
-        render json: portfolios, each_serializer: PortfolioSerializer
+        render json: portfolios, each_serializer: PortfolioSerializer, include: '**'
     end
 
     def show

@@ -9,6 +9,10 @@ class Activity < ApplicationRecord
   validates :date, presence: true
   validates :shares, presence: true, unless: [:category_is_fund? || :category_is_dividend?]
 
+  def average_price
+    price/shares
+  end
+
   private
 
   def category_is_fund?
