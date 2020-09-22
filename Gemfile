@@ -15,6 +15,8 @@ gem 'puma', '~> 4.1'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+gem 'dotenv-rails'
+gem 'rest-client', '~> 2.0', '>= 2.0.2'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -41,5 +43,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "jwt", "~> 2.2"
-
 gem "active_model_serializers", "~> 0.10.10"
