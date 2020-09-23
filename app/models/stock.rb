@@ -50,7 +50,7 @@ class Stock < ApplicationRecord
     end
 
     def costBasis
-        unsold_buys().sum{|unsold_buy| unsold_buy.average_price * unsold_buy.remaining}
+        unsold_buys().sum{|unsold_buy| unsold_buy.price * unsold_buy.remaining}
     end
 
     def average_price
@@ -63,7 +63,8 @@ class Stock < ApplicationRecord
 
     def realized
         totalSellPrice = sells.sum{|sell| sell.price }
-        soldCostBasis = sold_buys().sum{|sold_buy| 
+        soldCostBasis = sold_buys().sum{|sold_buy|
+        byebug
             sold_buy.average_price * (sold_buy.shares - sold_buy.remaining)
         }
         totalSellPrice - soldCostBasis
@@ -72,18 +73,18 @@ class Stock < ApplicationRecord
     private
     def unsold_buys
         unsold_buys = activities.select { |activity| 
-            activity.category == 'buy' && activity.remaining > 0
+            activity.category == 'Buy' && activity.remaining > 0
         }
     end
 
     def sold_buys
         sold_buys = activities.select { |activity|
-            activity.category == 'buy' && activity.remaining != activity.shares
+            activity.category == 'Buy' && activity.remaining != activity.shares
         }
     end
 
     def sells
-        activities.select {|activity| activity.category == 'sell'}
+        activities.select {|activity| activity.category == 'Sell'}
     end
 
 end

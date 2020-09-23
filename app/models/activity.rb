@@ -4,7 +4,7 @@ class Activity < ApplicationRecord
 
   belongs_to :stock
 
-  validates :category, presence: true, inclusion: { in: %w(dividend buy sell) }
+  validates :category, presence: true, inclusion: { in: %w(Dividend Buy Sell) }
   validates :price, presence: true
   validates :date, presence: true
   validates :shares, presence: true, unless: [:category_is_fund? || :category_is_dividend?]
@@ -16,11 +16,11 @@ class Activity < ApplicationRecord
   private
 
   def category_is_fund?
-    self.category === 'fund' ? true : false
+    self.category === 'Fund' ? true : false
   end
 
   def category_is_dividend?
-    self.category === 'dividend' ? true : false
+    self.category === 'Dividend' ? true : false
   end
 
 end
