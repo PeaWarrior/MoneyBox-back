@@ -3,28 +3,28 @@ class Stock < ApplicationRecord
     has_many :activities, dependent: :destroy
 
     def self.fetchStockData(query)
-        data = JSON.parse(RestClient.get('https://api.tdameritrade.com/v1/instruments', {
+        data = JSON.parse(RestClient.get("https://api.tdameritrade.com/v1/marketdata/#{query.upcase}/quotes", {
             params: {
-                apikey: "#{ENV["TD_AMERITRADE_API_KEY"]}",
-                symbol: query,
-                projection: 'fundamental'
+                apikey: "#{ENV["TD_AMERITRADE_API_KEY"]}"
             }
         }))[query.upcase]
         data_params = {
             name: data['description'].split(' - ')[0],
             ticker: data['symbol'],
             fundamental: {
-                high52: data['fundamental']['high52'],
-                low52: data['fundamental']['low52'],
-                peRatio: data['fundamental']['peRatio'],
-                vol1DayAverage: data['fundamental']['vol1DayAvg'],
-                marketCap: data['fundamental']['marketCap']
+                openPrice: ('%.2f' % data['openPrice']),
+                closePrice: ('%.2f' % data['closePrice']),
+                highPrice: ('%.2f' % data['highPrice']),
+                lowPrice: ('%.2f' % data['lowPrice']),
+                high52: ('%.2f' % data['52WkHigh']),
+                low52: ('%.2f' % data['52WkLow']),
+                peRatio: data['peRatio'],
+                lastPrice: ('%.2f' % data['lastPrice'])
             },
             dividend: {
-                AmountPerYear: data['fundamental']['dividendAmount'],
-                ExDivDate: data['fundamental']['dividendDate'],
-                PayAmount: data['fundamental']['dividendPayAmount'],
-                PayDate: data['fundamental']['dividendPayDate']
+                amountPerYear: data['divAmount'],
+                exDate: data['divDate'],
+                yield: data['divYield'],
             }
         }
     end
@@ -34,8 +34,17 @@ class Stock < ApplicationRecord
             params: {
                 token: "#{ENV["FINNHUB_API_KEY"]}",
                 symbol: query,
-                from: Date.today.strftime("%Y-%m-%d"),
+                from: 2.days.ago.strftime("%Y-%m-%d"),
                 to: Date.today.strftime("%Y-%m-%d")
+            }
+        }))
+    end
+
+    def self.fetchStockQuotes(queries)
+        data = JSON.parse(RestClient.get("https://api.tdameritrade.com/v1/marketdata/quotes", {
+            params: {
+                apikey: "#{ENV["TD_AMERITRADE_API_KEY"]}",
+                symbol: queries
             }
         }))
     end

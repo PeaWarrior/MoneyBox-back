@@ -7,4 +7,9 @@ class StocksController < ApplicationController
         render json: stockData
     end
 
+    def quotes
+        stockData = Stock.fetchStockQuotes(params[:queries])
+        render json: stockData
+    end
+
 end
