@@ -8,18 +8,18 @@ class Portfolio < ApplicationRecord
 
   def cash
     total = 0
-    total += totalFunds
-    total += realized
-    total -= costBasis()
-    total
+    total += totalFunds.to_i
+    total += realized.to_i
+    total -= costBasis().to_i
+    '%.2f' % total
   end
 
   def costBasis
-    stocks.sum{|stock| stock.costBasis()}
+    '%.2f' % stocks.sum{|stock| stock.costBasis()}
   end
 
   def realized
-    stocks.sum{|stock| stock.realized()}
+    '%.2f' % stocks.sum{|stock| stock.realized()}
   end
 
   def totalFunds
@@ -29,7 +29,7 @@ class Portfolio < ApplicationRecord
       total += fund.amount
     end
 
-    total
+    '%.2f' % total
   end
 
   private
