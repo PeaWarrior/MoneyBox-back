@@ -1,3 +1,3 @@
 class FundSerializer < ActiveModel::Serializer
-  attributes :id, :name, :amount
+  attributes :id, :category, :amount, :date
 end

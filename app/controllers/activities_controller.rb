@@ -13,7 +13,26 @@ class ActivitiesController < ApplicationController
         else
             render json: { error: 'Portfolio does not exist' }, status: :bad_request
         end
-    
+    end
+
+    def sell
+        portfolio = @current_user.portfolios.find(portfolio_params[:portfolio_id])
+
+        if portfolio
+
+            stock = portfolio.stocks.find_by(stock_params)
+            sharesToSell = activity_params[:shares].to_i
+
+            if stock.shares >= sharesToSell
+                stock.sell(activity_params[:shares].to_i)
+                stock.activities.create(activity_params)
+                render json: { portfolio: PortfolioSerializer.new(portfolio) }, include: '**'
+            else
+                render json: { error: 'Invalid request' }
+            end
+        else
+            render json: { error: 'Invalid request' }
+        end
     end
 
     private

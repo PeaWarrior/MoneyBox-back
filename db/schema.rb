@@ -29,8 +29,9 @@ ActiveRecord::Schema.define(version: 2020_09_19_043631) do
 
   create_table "funds", force: :cascade do |t|
     t.bigint "portfolio_id", null: false
-    t.string "name"
-    t.float "amount"
+    t.string "category", null: false
+    t.float "amount", null: false
+    t.date "date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["portfolio_id"], name: "index_funds_on_portfolio_id"

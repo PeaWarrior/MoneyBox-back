@@ -25,8 +25,12 @@ class Portfolio < ApplicationRecord
   def totalFunds
     total = 0
 
-    funds.each do |fund|
-      total += fund.amount
+    deposits.each do |deposit|
+      total += deposit.amount
+    end
+
+    withdrawals.each do |withdraw|
+      total -= withdraw.amount
     end
 
     '%.2f' % total
@@ -36,6 +40,14 @@ class Portfolio < ApplicationRecord
 
   def pricePerShare(activity)
     activity.price/activity.shares
+  end
+
+  def deposits
+    funds.filter{ |fund| fund.category === 'Deposit' }
+  end
+
+  def withdrawals
+    funds.filter{ |fund| fund.category === 'Withdrawal' }
   end
 
 end

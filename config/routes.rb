@@ -7,5 +7,7 @@ Rails.application.routes.draw do
   post '/login', to: 'users#login'
   get '/autologin', to: 'users#autologin'
   get '/quotes/:queries', to: 'stocks#quotes'
+  post '/sell', to: 'activities#sell'
+  get '/intraday/:ticker', to: 'stocks#intraday'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

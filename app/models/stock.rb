@@ -49,6 +49,23 @@ class Stock < ApplicationRecord
         }))
     end
 
+    def self.fetchIntradayPrices(query)
+        data = JSON.parse(RestClient.get("https://sandbox.iexapis.com/stable/stock/#{query}/intraday-prices", {
+            params: {
+                token: "#{ENV["IEX_SANDBOX_API_KEY"]}",
+                chartIEXOnly: true
+            }
+        }))
+        data.map do |intradayTrade|
+            {
+                date: intradayTrade['date'],
+                label: intradayTrade['label'],
+                minute: intradayTrade['minute'],
+                average: intradayTrade['average'] ? ('%.2f' % intradayTrade['average']) : nil
+            }
+        end
+    end
+
     def costBasis
         unsold_buys().sum{|unsold_buy| unsold_buy.price * unsold_buy.remaining}
     end
@@ -64,18 +81,35 @@ class Stock < ApplicationRecord
     def realized
         totalSellPrice = sells.sum{|sell| sell.price }
         soldCostBasis = sold_buys().sum{|sold_buy|
-        byebug
             sold_buy.average_price * (sold_buy.shares - sold_buy.remaining)
         }
         totalSellPrice - soldCostBasis
     end
 
-    private
     def unsold_buys
         unsold_buys = activities.select { |activity| 
             activity.category == 'Buy' && activity.remaining > 0
         }
     end
+
+    def sell(sharesToSell)
+        unsold_buys.each do |unsold_buy|
+            if sharesToSell > 0
+                if sharesToSell > unsold_buy.remaining
+                    sharesToSell -= unsold_buy.remaining
+                    unsold_buy.update(remaining: 0)
+                else
+                    unsold_buy.update(remaining: unsold_buy.remaining-sharesToSell)
+                    sharesToSell = 0
+                    return self
+                end
+            else
+                return self
+            end
+        end
+    end
+
+    private
 
     def sold_buys
         sold_buys = activities.select { |activity|

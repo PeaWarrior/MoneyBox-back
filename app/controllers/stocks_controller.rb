@@ -11,5 +11,10 @@ class StocksController < ApplicationController
         stockData = Stock.fetchStockQuotes(params[:queries])
         render json: stockData
     end
+    
+    def intraday
+        intradayData = Stock.fetchIntradayPrices(params[:ticker])
+        render json: intradayData
+    end
 
 end
