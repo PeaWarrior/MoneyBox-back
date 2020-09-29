@@ -13,7 +13,8 @@ class StocksController < ApplicationController
     end
     
     def intraday
-        intradayData = Stock.fetchIntradayPrices(params[:ticker])
+        openPrice = request.headers[:openPrice]
+        intradayData = Stock.fetchIntradayPrices(params[:ticker], openPrice)
         render json: intradayData
     end
 

@@ -49,19 +49,23 @@ class Stock < ApplicationRecord
         }))
     end
 
-    def self.fetchIntradayPrices(query)
+    def self.fetchIntradayPrices(query, openPrice)
         data = JSON.parse(RestClient.get("https://sandbox.iexapis.com/stable/stock/#{query}/intraday-prices", {
             params: {
                 token: "#{ENV["IEX_SANDBOX_API_KEY"]}",
                 chartIEXOnly: true
             }
         }))
-        data.map do |intradayTrade|
+
+        prevPrice = openPrice
+
+        x = data.map do |intradayTrade|
+            prevPrice = intradayTrade['average'] if intradayTrade['average']
             {
                 date: intradayTrade['date'],
                 label: intradayTrade['label'],
                 minute: intradayTrade['minute'],
-                average: intradayTrade['average'] ? ('%.2f' % intradayTrade['average']) : nil
+                average: ('%.2f' % prevPrice)
             }
         end
     end
