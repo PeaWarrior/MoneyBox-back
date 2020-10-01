@@ -59,13 +59,50 @@ class Stock < ApplicationRecord
 
         prevPrice = openPrice
 
-        x = data.map do |intradayTrade|
-            prevPrice = intradayTrade['average'] if intradayTrade['average']
+        data.map do |intradayTrade|
+            prevPrice = intradayTrade['close'] if intradayTrade['close']
             {
                 date: intradayTrade['date'],
                 label: intradayTrade['label'],
                 minute: intradayTrade['minute'],
-                average: ('%.2f' % prevPrice)
+                close: ('%.2f' % prevPrice)
+            }
+        end
+    end
+
+    def self.fetchWeekPrices(query)
+        data = JSON.parse(RestClient.get("https://api.tdameritrade.com/v1/marketdata/#{query}/pricehistory", {
+            params: {
+                apikey: "#{ENV["TD_AMERITRADE_API_KEY"]}",
+                periodType: "day",
+                period: 5,
+                frequencyType: "minute",
+                frequency: 1,
+                needExtendedHoursData: false
+            }
+        }))
+        data['candles'].map do |candle|
+            {
+                datetime: candle['datetime'],
+                close: candle['close']
+            }
+        end
+    end
+
+    def self.fetchHistoricalPrices(query, periodType, period = 1)
+        data = JSON.parse(RestClient.get("https://api.tdameritrade.com/v1/marketdata/#{query}/pricehistory", {
+            params: {
+                apikey: "#{ENV["TD_AMERITRADE_API_KEY"]}",
+                periodType: periodType,
+                period: period,
+                frequencyType: periodType == 'year' && period == 5 ? 'weekly' : 'daily',
+                needExtendedHoursData: false
+            }
+        }))
+        data['candles'].map do |candle|
+            {
+                datetime: candle['datetime'],
+                close: candle['close']
             }
         end
     end

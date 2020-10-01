@@ -18,4 +18,16 @@ class StocksController < ApplicationController
         render json: intradayData
     end
 
+    def week
+        weekData = Stock.fetchWeekPrices(params[:ticker])
+        render json: weekData
+    end
+
+    def historical
+        period = request.headers[:period]
+        periodType = request.headers[:periodType]
+        historicalData = Stock.fetchHistoricalPrices(params[:ticker], periodType, period)
+        render json: historicalData
+    end
+
 end
