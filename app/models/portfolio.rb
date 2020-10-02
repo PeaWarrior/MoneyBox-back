@@ -8,9 +8,9 @@ class Portfolio < ApplicationRecord
 
   def cash
     total = 0
-    total += totalFunds.to_i
-    total += realized.to_i
-    total -= costBasis().to_i
+    total += totalFunds.to_f
+    total += realized.to_f
+    total -= costBasis().to_f
     '%.2f' % total
   end
 
