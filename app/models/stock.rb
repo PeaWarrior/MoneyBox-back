@@ -2,6 +2,15 @@ class Stock < ApplicationRecord
     belongs_to :portfolio
     has_many :activities, dependent: :destroy
 
+    def self.fetchStockSymbols
+        data = JSON.parse(RestClient.get('https://finnhub.io/api/v1/stock/symbol', {
+            params: {
+                token: "#{ENV["FINNHUB_API_KEY"]}",
+                exchange: "US"
+            }
+        }))
+    end
+
     def self.fetchStockData(query)
         data = JSON.parse(RestClient.get("https://api.tdameritrade.com/v1/marketdata/#{query.upcase}/quotes", {
             params: {

@@ -1,5 +1,10 @@
 class StocksController < ApplicationController
 
+    def index
+        stockSymbols = Stock.fetchStockSymbols
+        render json: stockSymbols
+    end
+
     def show
         stockData = Stock.fetchStockData(params[:id])
         stockNewsData = Stock.fetchStockNewsData(params[:id])
