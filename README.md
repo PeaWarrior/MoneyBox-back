@@ -1,9 +1,8 @@
-# Money Box [Backend]
+# Money Box Rails Backend API
 
+**Money Box** is a web application designed to help you track and manage your stock portfolios all in one place. Equipped with real-time trade data, news and historical stock data, managing your portfolios just got easier.
 
-Money Box is a stock portfolio manager web application with CRUD functionality including real-time trades, news and historical stock data.
-
-This is the Ruby on Rails API for Money Box. You can access the Frontend [here](https://github.com/PeaWarrior/MoneyBox-front).
+This is the Ruby on Rails Backend API for **Money Box**. You can access the Frontend [here](https://github.com/PeaWarrior/MoneyBox-front).
 
 
 ## Prerequisites
@@ -20,7 +19,8 @@ This is the Ruby on Rails API for Money Box. You can access the Frontend [here](
     $ brew install ruby
     ```
 
-3. Install [Rails](https://rubyonrails.org/)
+3. Install [Ruby on Rails](https://rubyonrails.org/)
+
     ```console
     $ gem install rails
     ```
@@ -41,14 +41,39 @@ This is the Ruby on Rails API for Money Box. You can access the Frontend [here](
     $ bundle install
     ```
     
-3. Initiate the database, migrate and seed
+3. Initiate the database and migrate
 
     ```console
-    $ rails db:create db:migrate db:seed
+    $ rails db:create db:migrate
     ```
 
-4. Start the rails server
+## Initial Configuration
+In order to take advantage of all features of **Money Box**, you must secure your own API keys for the following APIs for use.
+
+1. Register for developer API keys for the following:
+    * [Finnhub](https://finnhub.io/)
+    * [IEX](https://iexcloud.io/)
+    * [TD Ameritrade](https://developer.tdameritrade.com/)
+
+2. Create a new `.env` file in the root directory of this project API.
 
     ```console
-    $ rails s -p 3001
+    $ touch .env
     ```
+
+3. Add the API keys to your `.env` file by copying the following and replacing the `<...>` with the corrent corresponding key.
+
+    ```env
+    IEX_API_KEY=<IEX API KEY HERE>
+    FINNHUB_API_KEY=<FINNHUB API KEY HERE>
+    TD_AMERITRADE_API_KEY=<TD AMERITRADE API KEY HERE>
+    ```
+4. Remember to add the `.env` file to your `.gitignore`.
+
+## Starting the Server
+
+```console
+$ rails s -p 3001
+```
+
+This will start the server on port 3001.
