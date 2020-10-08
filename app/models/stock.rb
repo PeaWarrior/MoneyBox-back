@@ -59,9 +59,9 @@ class Stock < ApplicationRecord
     end
 
     def self.fetchIntradayPrices(query, openPrice)
-        data = JSON.parse(RestClient.get("https://sandbox.iexapis.com/stable/stock/#{query}/intraday-prices", {
+        data = JSON.parse(RestClient.get("https://cloud.iexapis.com/stable/stock/#{query}/intraday-prices", {
             params: {
-                token: "#{ENV["IEX_SANDBOX_API_KEY"]}",
+                token: "#{ENV["IEX_API_KEY"]}",
                 chartIEXOnly: true
             }
         }))
