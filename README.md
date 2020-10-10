@@ -61,7 +61,7 @@ In order to take advantage of all features of **Money Box**, you must secure you
     $ touch .env
     ```
 
-3. Add the API keys to your `.env` file by copying the following and replacing the `<...>` with the corrent corresponding key.
+3. Add the API keys to your `.env` file by copying the following and replacing the `<...>` with the correct corresponding key.
 
     ```env
     IEX_API_KEY=<IEX API KEY HERE>
