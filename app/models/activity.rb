@@ -7,10 +7,6 @@ class Activity < ApplicationRecord
   validates :shares, presence: true
   validates :shares, numericality: { greater_than: 0 }, unless: [:category_is_dividend?]
 
-  def average_price
-    price
-  end
-
   private
 
   def category_is_dividend?
