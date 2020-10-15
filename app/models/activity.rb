@@ -8,7 +8,7 @@ class Activity < ApplicationRecord
   validates :shares, numericality: { greater_than: 0 }, unless: [:category_is_dividend?]
 
   def average_price
-    price/shares
+    price
   end
 
   private

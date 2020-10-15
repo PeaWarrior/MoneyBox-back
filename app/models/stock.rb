@@ -129,7 +129,7 @@ class Stock < ApplicationRecord
     end
 
     def realized
-        totalSellPrice = sells.sum{|sell| sell.price }
+        totalSellPrice = sells.sum{|sell| sell.price * sell.shares}
         soldCostBasis = sold_buys().sum{|sold_buy|
             sold_buy.average_price * (sold_buy.shares - sold_buy.remaining)
         }
