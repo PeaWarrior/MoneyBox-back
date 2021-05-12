@@ -17,8 +17,9 @@ class PortfoliosController < ApplicationController
 
     def create
         portfolio = @current_user.portfolios.create(portfolio_params)
+        puts portfolio_params
         if portfolio.valid?
-            render json: { portfolio: PortfolioSerializer.new(portfolio) }
+            render json: { portfolio: PortfolioSerializer.new(portfolio).as_json }
         else
             render json: { error: 'Unable to create portfolio' }, status: :bad_request
         end
