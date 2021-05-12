@@ -8,7 +8,7 @@ class PortfoliosController < ApplicationController
     def show
         portfolio = Portfolio.find_by(user_id: @current_user.id, id: portfolio_params[:id])
         if portfolio.valid?
-            render json: { portfolio: PortfolioSerializer.new(portfolio) }, include: '**'
+            render json: { portfolio: PortfolioSerializer.new(portfolio).to_h(include: '**') }
         else
             render json: { error: 'Unable to find portfolio' }, status: :bad_request
         end
