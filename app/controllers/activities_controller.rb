@@ -8,7 +8,7 @@ class ActivitiesController < ApplicationController
                 activity = stock.activities.create(activity_params)
                 activity.update(remaining: activity.shares) if activity.category === 'Buy'
             if activity.valid?
-                render json: { portfolio: PortfolioSerializer.new(portfolio) }, include: '**'
+                render json: { portfolio: PortfolioSerializer.new(portfolio).to_h(include: '**') }
             end
         else
             render json: { error: 'Portfolio does not exist' }, status: :bad_request
@@ -26,7 +26,7 @@ class ActivitiesController < ApplicationController
             if stock.shares >= sharesToSell
                 stock.sell(activity_params[:shares].to_i)
                 stock.activities.create(activity_params)
-                render json: { portfolio: PortfolioSerializer.new(portfolio) }, include: '**'
+                render json: { portfolio: PortfolioSerializer.new(portfolio).to_h(include: '**') }
             else
                 render json: { error: 'Invalid request' }
             end

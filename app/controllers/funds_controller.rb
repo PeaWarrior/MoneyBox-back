@@ -6,7 +6,7 @@ class FundsController < ApplicationController
         if portfolio
             fund = Fund.create(fund_params)
 
-            render json: { portfolio: PortfolioSerializer.new(portfolio)}
+            render json: { portfolio: PortfolioSerializer.new(portfolio).as_json }
         else
             render json: { error: 'Invalid request' }
         end
@@ -18,7 +18,7 @@ class FundsController < ApplicationController
         if portfolio && portfolio.cash >= fund_params[:amount]
             fund = Fund.create(fund_params)
 
-            render json: { portfolio: PortfolioSerializer.new(portfolio)}
+            render json: { portfolio: PortfolioSerializer.new(portfolio).as_json }
         else
             render json: { error: 'Invalid request' }
         end
